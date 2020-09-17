@@ -1,0 +1,36 @@
+{
+    "name" : "JongTabien",
+    "version" : "1.0.0",
+    "description" : "JongTabien",
+    "manifest_version" : 2 ,
+    "background" : {
+        "scripts" : ["background.js"],
+        "persistent" : false
+    },
+    "content_scripts": [
+        {
+            "matches" : [
+                "https://reserve.dlt.go.th/reserve/*"
+            ],
+            "exclude_matches" : [],
+            "all_frames": false,
+            "js": ["content.js"]
+        },
+        {
+            "matches": [ 
+                "https://reserve.dlt.go.th/reserve/*" 
+            ],
+            "js": ["docstart.js"],
+            "run_at": "document_start",
+            "all_frames": false
+        }
+    ],
+    "permissions" : [
+        "bookmarks", "tabs", "storage"
+    ],
+    "icons": {
+        "16" : "Car.png",
+        "48" : "Car.png",
+        "128" : "Car.png"
+    }
+}
