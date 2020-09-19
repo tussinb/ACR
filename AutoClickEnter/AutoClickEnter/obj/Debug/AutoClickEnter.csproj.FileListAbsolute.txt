@@ -1,0 +1,9 @@
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\bin\Debug\AutoClickEnter.exe.config
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\bin\Debug\AutoClickEnter.exe
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\bin\Debug\AutoClickEnter.pdb
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\obj\Debug\AutoClickEnter.csprojAssemblyReference.cache
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\obj\Debug\AutoClickEnter.Properties.Resources.resources
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\obj\Debug\AutoClickEnter.csproj.GenerateResource.cache
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\obj\Debug\AutoClickEnter.exe
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\obj\Debug\AutoClickEnter.pdb
+C:\csharp-workspace\AutoClickEnter\AutoClickEnter\obj\Debug\AutoClickEnter.fmMain.resources
