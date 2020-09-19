@@ -9,6 +9,7 @@ using System.Threading;
 using System.Net.Http; 
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using SimpleHttp;
 
 namespace AutoClickEnter
 {
@@ -222,9 +223,32 @@ namespace AutoClickEnter
 			}
 		}
 
+		private String lastZ = "";
+		private Boolean stopNow = false;
+		private Boolean startNow = false;
+		private DateTime lastInLoop=DateTime.MinValue ;
+
 		private void fmMain_Load(object sender, EventArgs e)
 		{
-			
+			Route.Add("/status", (req, res, props) =>
+			{
+				res.AsText("running:" + (button1.Enabled ? "false" : "true") + "\nlastInLoop:" + (lastInLoop == DateTime.MinValue ? "null" : lastInLoop.ToString())+"\nlastZ:"+lastZ);
+			});
+			Route.Add("/stopNow", (req, res, props) =>
+			{
+				stopNow = true;
+				res.AsText("stopNow:" + (stopNow ? "true" : "false"));
+			});
+			Route.Add("/startNow", (req, res, props) =>
+			{
+				if (button1.Enabled)
+				{
+					startNow = true;
+				}
+				res.AsText("ok:true");
+			});
+			HttpServer.ListenAsync(80, CancellationToken.None, Route.OnHttpRequestAsync);
+
 		}
 
 		String lastCloseDetected = "";
@@ -232,18 +256,19 @@ namespace AutoClickEnter
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			String yyyymmdd = DateTime.Now.ToString("yyyyMMdd");
-
-			if (yyyymmdd.Equals(lastCloseDetected))
-				return;
-
+			 
 			String hhnn =DateTime.Now.ToString("HH:mm");
 
 			DayOfWeek dow = DateTime.Now.DayOfWeek;
 
 			
-			if (dow>=DayOfWeek.Monday && dow<=DayOfWeek.Friday &&
-				hhnn.CompareTo("09:58") >= 0 && hhnn.CompareTo("10:30")<0)
+			if (startNow || (!yyyymmdd.Equals(lastCloseDetected) &&  
+				dow >=DayOfWeek.Monday && dow<=DayOfWeek.Friday &&
+				hhnn.CompareTo("09:58") >= 0 && hhnn.CompareTo("10:30")<0
+				)
+				)
 			{
+				startNow = false;
 				Console.WriteLine(hhnn);
 				runNow();
 			}
@@ -292,18 +317,30 @@ namespace AutoClickEnter
 
 		private void runNow()
 		{
+			if (!button1.Enabled)
+				return;
+
 			button1.Enabled = false;
 			timer1.Enabled = false;
 			lastCloseDetected = "";
+			startNow = false;
+			lastZ = "";
 
 			DateTime lastCaptionChanged = DateTime.Now;
 			try
 			{
 				IntPtr h = getChromeWindow();
+				stopNow = false;
 
 				String caption = "";
 				while (true)
 				{
+					lastInLoop = DateTime.Now;
+					if (stopNow)
+					{
+						CloseWindow(h);
+						break;
+					}
 					String t = GetWindowText(h);
 					if (t.Contains("reserve.dlt.go.th"))
 					{
@@ -335,6 +372,7 @@ namespace AutoClickEnter
 						String[] st = t.Split('_');
 						if (st.Length == 3 && st[0].Equals("Z"))
 						{
+							lastZ = t;
 							SetForegroundWindow(h);
 							Thread.Sleep(50);
 							string command = st[2];
