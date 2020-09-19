@@ -262,15 +262,17 @@ namespace AutoClickEnter
 			DayOfWeek dow = DateTime.Now.DayOfWeek;
 
 			
-			if (startNow || (!yyyymmdd.Equals(lastCloseDetected) &&  
+			if (startNow || ((!yyyymmdd.Equals(lastCloseDetected) || hhnn.CompareTo("10:05") <= 0) &&  
 				dow >=DayOfWeek.Monday && dow<=DayOfWeek.Friday &&
 				hhnn.CompareTo("09:58") >= 0 && hhnn.CompareTo("10:30")<0
-				)
-				)
+				))
 			{
 				startNow = false;
-				Console.WriteLine(hhnn);
-				runNow();
+				if (button1.Enabled)
+				{
+					Console.WriteLine(hhnn);
+					runNow();
+				}
 			}
 		}
 
