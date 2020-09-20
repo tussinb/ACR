@@ -232,7 +232,7 @@ namespace AutoClickEnter
 		{
 			Route.Add("/status", (req, res, props) =>
 			{
-				res.AsText("running:" + (button1.Enabled ? "false" : "true") + "\nlastInLoop:" + (lastInLoop == DateTime.MinValue ? "null" : lastInLoop.ToString())+"\nlastZ:"+lastZ);
+				res.AsText("running:" + (button1.Enabled ? "false" : "true") + "\nlastInLoop:" + (lastInLoop == DateTime.MinValue ? "null" : lastInLoop.ToString("dd/MM/yyyy HH:mm:ss")) +"\nlastZ:"+lastZ);
 			});
 			Route.Add("/stopNow", (req, res, props) =>
 			{
